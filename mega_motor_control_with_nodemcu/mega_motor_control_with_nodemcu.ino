@@ -1,5 +1,7 @@
 #include <Servo.h>
-const int motor1[] = {8, 9, 10, 11}; // Step Motor
+const int motor1[] = {4, 5, 6, 7}; // Step Motor 1 - X ekseni 
+const int motor2[] = {8, 9, 10, 11}; // Step Motor 2 - Z ekseni 
+const int motor3[] = {14, 15, 16, 17}; // Step Motor 3 - Y ekseni
 
 const int delayTime = 3;
 const int controlPins[] = {49, 47, 45};
@@ -7,12 +9,14 @@ const int actionPin = 51;
 
 const int servoPin = 13; // Servo Motor Pini
 const Servo servoMotor;
-int servoValue = 90;
+int servoValue = 40;
 
 void setup() {
   /*Motor pinleri OUTPUT moduna getirilir*/
   for(int i=0; i<4; i++) {
     pinMode(motor1[i], OUTPUT);
+    pinMode(motor2[i], OUTPUT);
+    pinMode(motor3[i], OUTPUT);
     }
 
     /* Control pinleri ise INPUT moduna getirilir. */
@@ -55,29 +59,35 @@ void loop() {
     switch(sw) {
       
       case 0:
-        servoValue += 3;
+        servoValue += 5;
         gripper();
         break;
       case 1:
+        Serial.println("Move motor1 to next");
         moveNext(motor1);
         break;
       case 2:
+        Serial.println("Move motor1 to back");
         moveBack(motor1);
         break;
       case 3:
         Serial.println("Move motor2 to next");
+        moveNext(motor2);
         break;
       case 4:
         Serial.println("Move motor2 to back");
+        moveBack(motor2);
         break;
       case 5:
         Serial.println("Move motor3 to next");
+        moveNext(motor3);
         break;
       case 6:
         Serial.println("Move motor3 to back");
+        moveBack(motor3);
         break;
       case 7:
-        servoValue -= 3;
+        servoValue -= 5;
         gripper();
         break;
        
@@ -88,7 +98,7 @@ void loop() {
 
 void gripper() {
   /* Bu fonksiyon gripper'ın hareketini sağlayan servo motoru hareket ettirir. */
-  servoValue = servoValue > 180 ? 180: (servoValue < 0 ? 0: servoValue);
+  servoValue = servoValue > 160 ? 160: (servoValue < 40 ? 40: servoValue);
   Serial.println("\nServo value is ");
   Serial.print(servoValue);
   Serial.println("");
